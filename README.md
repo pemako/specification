@@ -6,11 +6,12 @@
 
 README：
 
-- [介绍](#介绍)
-  - [服务治理标准](#服务治理标准)
+- [服务治理标准](#服务治理标准)
+  - [介绍](#介绍)
+  - [服务治理标准](#服务治理标准-1)
   - [服务治理接口](#服务治理接口)
-- [如何构建](#如何构建)
-  - [如何使用](#如何使用)
+  - [如何构建](#如何构建)
+    - [如何使用](#如何使用)
 
 ## 介绍
 
@@ -109,5 +110,5 @@ require github.com/polarismesh/specification v1.3.0
 
 ```toml
 [dependencies]
-polaris-specification = "1.3.0"
+polaris-specification = "1.3"
 ```

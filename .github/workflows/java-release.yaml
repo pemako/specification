@@ -18,6 +18,10 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
       - name: "Publish package"
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
@@ -29,14 +33,15 @@ jobs:
           cd polaris-specification
           
           pre_release=`echo ${VERSION}|egrep "(alpha|beta|rc|[T|t]est)"|wc -l`
-          if [ ${pre_release} == 0 ]; then
+          if [ ${pre_release} -gt 0 ]; then
             echo "pubilsh snapshot"
             SNAPSHOT_VERSION=${VERSION%%-*}
-            sed -i "s/##VERSION##/${SNAPSHOT_VERSION}-SNAPSHOT" pom.xml
+            sed -i "s/##VERSION##/${SNAPSHOT_VERSION}-SNAPSHOT/g" pom.xml
             mvn --batch-mode deploy
           else
-            echo "publish release"
-            sed -i "s/##VERSION##/${VERSION}" pom.xml
+            RELEASE_VERSION=${${VERSION%%-*}:1}
+            echo "publish release ${RELEASE_VERSION}"
+            sed -i "s/##VERSION##/${RELEASE_VERSION}/g" pom.xml
             cat <(echo -e "${{ secrets.GPG_PRIVATE_KEY }}") | gpg --batch --import;
             mvn clean --batch-mode deploy -P release -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} -DskipTests
           fi
