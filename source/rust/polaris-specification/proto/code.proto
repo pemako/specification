@@ -74,6 +74,7 @@ enum Code {
     InvalidFaultDetectName           = 400901;
     InvalidFaultDetectNamespace      = 400902;
     FaultDetectRuleExisted           = 400903;
+    InvalidMatchRule                 = 400904;
 
     // network relative codes
     ServicesExistedMesh   = 400170;
@@ -158,7 +159,8 @@ enum Code {
     NotFoundResourceConfigFile      = 400807;
     InvalidConfigFileTemplateName   = 400808;
     EncryptConfigFileException      = 400809;
-    DecryptConfigFileException      = 400810;
+    GroupExistActiveRelease        = 400810;
+    DecryptConfigFileException      = 400811;
 
     // auth codes
     InvalidUserOwners          = 400410;

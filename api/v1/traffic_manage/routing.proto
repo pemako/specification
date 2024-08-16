@@ -93,6 +93,8 @@ enum RoutingPolicy {
   RulePolicy = 0;
   // Route by destination metadata ==> MetadataRoutingConfig
   MetadataPolicy = 1;
+  // Route by Nearby rule => NearByRoutingConfig
+  NearbyPolicy = 2;
 }
 
 // configuration root for route
@@ -122,7 +124,10 @@ message RouteRule {
   string description = 12;
   // extendInfo 用于承载一些额外信息
   // case 1: 升级到 v2 版本时，记录对应到 v1 版本的 id 信息
+  // deprecated_filed only for compatible to the old version server
   map<string, string> extendInfo = 20;
+  // 路由规则标签数据
+  map<string, string> metadata = 21;
 }
 
 message MetadataFailover {
@@ -180,11 +185,11 @@ message NearbyRoutingConfig {
 // RuleRoutingConfig routing configuration
 message RuleRoutingConfig {
   // source source info
-  // deprecated: only for compatible to the old version server
-  repeated SourceService sources = 1;
+  // deprecated_filed  only for compatible to the old version server
+  repeated SourceService sources = 1 [deprecated = true];
   // destination destinations info
-  // deprecated: only for compatible to the old version server
-  repeated DestinationGroup destinations = 2;
+  // deprecated_filed  only for compatible to the old version server
+  repeated DestinationGroup destinations = 2 [deprecated = true];
   // rule route chain
   repeated SubRuleRouting rules = 3;
 }
@@ -260,6 +265,8 @@ message SourceMatch {
     PATH = 5;
     // cookie match http cookie
     COOKIE = 6;
+    // indicate the caller instance metadata
+    CALLER_METADATA = 7;
   }
   Type type = 1;
   // header key or query key
